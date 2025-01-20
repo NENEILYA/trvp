@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
 
-  // --- Состояние приложения ---
+
   let mechanics = []; // список всех механиков
   let selectedMechanic = null; // выбранный механик для просмотра задач
   let tasks = []; // задачи выбранного механика
@@ -20,16 +20,11 @@
   // Поле для добавления нового бренда
   let newBrand = "";
 
-  // --- Состояние перепривязки задачи ---
-  // reassignTaskId: какую задачу сейчас перепривязываем (null, если никакую)
-  // reassignMechanicId: какой механик выбран из списка
   let reassignTaskId = null;
   let reassignMechanicId = "";
 
-  // Адрес API вашего сервера
   const API_URL = "http://localhost:3000/api";
 
-  // При монтировании компонента загружаем механиков и бренды
   onMount(async () => {
     await Promise.all([fetchMechanics(), fetchBrands()]);
   });
@@ -136,7 +131,6 @@
         alert("Ошибка: " + (errorData.error || "Неизвестная ошибка"));
         return;
       }
-      // Если ок
       taskName = "";
       taskBrand = "";
       taskComplexity = 1;
@@ -183,7 +177,6 @@
         alert("Ошибка: " + (errorData.error || "Неизвестная ошибка"));
         return;
       }
-      // Если всё ок, очищаем поле и обновляем список брендов
       newBrand = "";
       await fetchBrands();
     } catch (err) {
@@ -192,9 +185,7 @@
     }
   }
 
-  // --- ЛОГИКА ПЕРЕПРИВЯЗКИ (реассоциации) ЗАДАЧИ ---
 
-  // Пользователь нажал «Перепривязать» - показываем форму для этой задачи
   function startReassignTask(taskId) {
     reassignTaskId = taskId;
     reassignMechanicId = "";
